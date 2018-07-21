@@ -46,7 +46,6 @@ class Cell {
         }
     }
 }
-
 var canvas=document.getElementById("Pazl");
     canvas.width=400;
     canvas.height=400;
@@ -54,51 +53,66 @@ var canvas=document.getElementById("Pazl");
     context.fillStyle="#125";
     context.fillRect(0,0,canvas.width,canvas.height);
     context.font="30px Ariel";
-var fps=60;
-var timer=setInterval(function () {
-    var numb ;
-    for(numb=0;numb<=15;numb++) {
-        let cell = new Cell(arr[numb], numb);
-        cell.drawCell();
-    }
+var button=0;
+    context.fillStyle="#FFD700";
+    context.fillRect(98,100,200,100);
+    context.fillStyle="#165";
+    context.fillText("Начать игру",110,150,200);
 
-},1000/fps);
 Pazl.onclick=function (e) {
-    var poY,poX,zamena,numbArr;
-    poY=Math.floor(e.clientY/100);
-    poX=Math.floor(e.clientX/100);
-    numbArr=poY*4+poX;
-    console.log("Квадрат ",poY,poX,arr[numbArr]);
-    //Лево
-    if(arr[poY*4+poX+1]===16){
-        console.log("Работает",poX,poY);
-       let cell=new Cell(arr[numbArr],numbArr+1); //(poX+1,poY,arr[numbArr]);
-       zamena=arr[numbArr+1];
-       arr[numbArr+1]=arr[numbArr];
-       arr[numbArr]=zamena;
-    }
-    //Право
-    if(arr[numbArr-1]===16){
-        console.log("Работает",poX,poY);
-        let cell=new Cell(arr[numbArr],numbArr-1);
-        zamena=arr[numbArr-1];
-        arr[numbArr-1]=arr[numbArr];
-        arr[numbArr]=zamena;
-    }
-    //Низ
-    if(arr[numbArr+4]===16){
-        console.log("Работает",poX,poY);
-        let cell=new Cell(arr[numbArr],numbArr+4);
-        zamena=arr[numbArr+4];
-        arr[numbArr+4]=arr[numbArr];
-        arr[numbArr]=zamena;
-    }
-    //Верх
-    if(arr[numbArr-4]===16){
-        console.log("Работает",poX,poY);
-        let cell=new Cell(arr[numbArr],numbArr-4);
-        zamena=arr[numbArr-4];
-        arr[numbArr-4]=arr[numbArr];
-        arr[numbArr]=zamena;
+    var pY, pX, button = 0;
+    pY = Math.floor(e.clientY / 100);
+    pX = Math.floor(e.clientX / 100);
+    console.log("Начать игру",pX,pY,e.clientX,e.clientY );
+    if (pX === 1 || pX === 2 )
+        if(pY===1)
+        button += 1;
+    if (button === 1) {
+        context.fillStyle="#125";
+        context.fillRect(0,0,canvas.width,canvas.height);
+        var fps = 60;
+        var timer = setInterval(function () {
+            var numb;
+            for (numb = 0; numb <= 15; numb++) {
+                let cell = new Cell(arr[numb], numb);
+                cell.drawCell();
+            }
+        }, 1000 / fps);
+
+        Pazl.onclick = function (e) {
+            var poY, poX, zamena, numbArr;
+            poY = Math.floor(e.clientY / 100);
+            poX = Math.floor(e.clientX / 100);
+            numbArr = poY * 4 + poX;
+            console.log("Квадрат ", poY, poX, arr[numbArr]);
+            //Лево
+            if (arr[numbArr + 1] === 16) {
+                let cell = new Cell(arr[numbArr], numbArr );
+                zamena = arr[numbArr + 1];
+                arr[numbArr + 1] = arr[numbArr];
+                arr[numbArr] = zamena;
+            }
+            //Право
+            if (arr[numbArr - 1] === 16) {
+                let cell = new Cell(arr[numbArr], numbArr );
+                zamena = arr[numbArr - 1];
+                arr[numbArr - 1] = arr[numbArr];
+                arr[numbArr] = zamena;
+            }
+            //Низ
+            if (arr[numbArr + 4] === 16) {
+                let cell = new Cell(arr[numbArr], numbArr );
+                zamena = arr[numbArr + 4];
+                arr[numbArr + 4] = arr[numbArr];
+                arr[numbArr] = zamena;
+            }
+            //Верх
+            if (arr[numbArr - 4] === 16) {
+                let cell = new Cell(arr[numbArr], numbArr);
+                zamena = arr[numbArr - 4];
+                arr[numbArr - 4] = arr[numbArr];
+                arr[numbArr] = zamena;
+            }
+        }
     }
 };
