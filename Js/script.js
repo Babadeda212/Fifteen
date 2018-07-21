@@ -35,43 +35,31 @@ class Cell {
     getY(){
         return(Math.floor(this.position/4));
     }
-    
+    drawCell(){
+        context.fillStyle = "#FFD700";
+        context.fillRect(this.getX() * 100 + 5, this.getY() * 100 + 5, 90, 90);
+        context.fillStyle = "#165";
+        context.fillText(this.number, this.getX() * 100 + 35, this.getY() * 100 + 40);
+        if(this.number===16){
+            context.fillStyle="#125";
+            context.fillRect(this.getX()*100+5,this.getY()*100+5,90,90);
+        }
+    }
 }
-/*let cell=new Cell(9,4);
-console.log(cell.getX()*100+5);
-console.log(cell.getY()*100+5);
-*/
+
 var canvas=document.getElementById("Pazl");
     canvas.width=400;
     canvas.height=400;
     var context=canvas.getContext("2d");
     context.fillStyle="#125";
     context.fillRect(0,0,canvas.width,canvas.height);
-    var x,y;
-function drawCell(x,y,a) {
-
-        context.fillStyle = "#FFD700";
-        context.fillRect(x * 100 + 5, y * 100 + 5, 90, 90);
-        context.fillStyle = "#165";
-        context.fillText(a, x * 100 + 35, y * 100 + 40);
-        if(a===16){
-            context.fillStyle="#125";
-            context.fillRect(x*100+5,y*100+5,90,90);
-        }
-
-
-}
     context.font="30px Ariel";
 var fps=60;
 var timer=setInterval(function () {
-    var numb = 0;
-    // console.log("Перерисовка",arr);
-    for (y = 0; y <= 3; y++) {
-        for (x = 0; x <= 3; x++) {
-                let cell=new Cell(arr[numb],numb);
-                drawCell(cell.getX(), cell.getY(), arr[numb]);
-                numb += 1;
-        }
+    var numb ;
+    for(numb=0;numb<=15;numb++) {
+        let cell = new Cell(arr[numb], numb);
+        cell.drawCell();
     }
 
 },1000/fps);
@@ -84,7 +72,7 @@ Pazl.onclick=function (e) {
     //Лево
     if(arr[poY*4+poX+1]===16){
         console.log("Работает",poX,poY);
-       drawCell(poX+1,poY,arr[numbArr]);
+       let cell=new Cell(arr[numbArr],numbArr+1); //(poX+1,poY,arr[numbArr]);
        zamena=arr[numbArr+1];
        arr[numbArr+1]=arr[numbArr];
        arr[numbArr]=zamena;
@@ -92,7 +80,7 @@ Pazl.onclick=function (e) {
     //Право
     if(arr[numbArr-1]===16){
         console.log("Работает",poX,poY);
-        drawCell(poX-1,poY,arr[numbArr]);
+        let cell=new Cell(arr[numbArr],numbArr-1);
         zamena=arr[numbArr-1];
         arr[numbArr-1]=arr[numbArr];
         arr[numbArr]=zamena;
@@ -100,7 +88,7 @@ Pazl.onclick=function (e) {
     //Низ
     if(arr[numbArr+4]===16){
         console.log("Работает",poX,poY);
-        drawCell(poX,poY+1,arr[numbArr]);
+        let cell=new Cell(arr[numbArr],numbArr+4);
         zamena=arr[numbArr+4];
         arr[numbArr+4]=arr[numbArr];
         arr[numbArr]=zamena;
@@ -108,7 +96,7 @@ Pazl.onclick=function (e) {
     //Верх
     if(arr[numbArr-4]===16){
         console.log("Работает",poX,poY);
-        drawCell(poX,poY-1,arr[numbArr]);
+        let cell=new Cell(arr[numbArr],numbArr-4);
         zamena=arr[numbArr-4];
         arr[numbArr-4]=arr[numbArr];
         arr[numbArr]=zamena;
