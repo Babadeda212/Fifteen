@@ -16,14 +16,23 @@ function shuffle(array) {
 
     return array;
 }
-var arr = [];
+var arra = [];
 for (var i = 0 ; i <=14; i++)
-    arr.push(i+1);
-console.log(arr);
-shuffle(arr);
-arr.push(16);
-console.log(arr);
+    arra.push(i+1);
+console.log(arra);
+shuffle(arra);
+arra.push(16);
+console.log(arra);
 
+    var arr = new Array(),num=0;
+    for( i=0; i<4; i++){
+        arr[i] = new Array();
+        for(var j=0; j<4; j++){
+            arr[i][j]=arra[num];
+            num++;
+        }
+    }
+console.log(arr);
 class Cell {
     constructor(number,position){
         this.number=number;
@@ -47,72 +56,102 @@ class Cell {
     }
 }
 var canvas=document.getElementById("Pazl");
-    canvas.width=400;
-    canvas.height=400;
-    var context=canvas.getContext("2d");
-    context.fillStyle="#125";
-    context.fillRect(0,0,canvas.width,canvas.height);
-    context.font="30px Ariel";
-var button=0;
-    context.fillStyle="#FFD700";
-    context.fillRect(98,100,200,100);
-    context.fillStyle="#165";
-    context.fillText("Начать игру",110,150,200);
-
+canvas.width=500;
+canvas.height=400;
+var context=canvas.getContext("2d");
+context.fillStyle="#125";
+context.fillRect(0,0,400,400);
+context.font="30px Ariel";
+var click=0,point;
+var go= new Image ();
+go.src="1.png";
+context.drawImage(go,39,141);
 Pazl.onclick=function (e) {
     var pY, pX, button = 0;
     pY = Math.floor(e.clientY / 100);
     pX = Math.floor(e.clientX / 100);
-    console.log("Начать игру",pX,pY,e.clientX,e.clientY );
-    if (pX === 1 || pX === 2 )
-        if(pY===1)
-        button += 1;
+    if (1 <= pX <= 8)
+        if (1 <= pY)
+            button += 1;
     if (button === 1) {
-        context.fillStyle="#125";
-        context.fillRect(0,0,canvas.width,canvas.height);
+        context.fillStyle = "#125";
+        context.fillRect(0, 0, 400, 400);
         var fps = 60;
         var timer = setInterval(function () {
-            var numb;
-            for (numb = 0; numb <= 15; numb++) {
-                let cell = new Cell(arr[numb], numb);
-                cell.drawCell();
+            for(i=0;i<=15;i++){
+
+                    let cell = new Cell(arra[i],i);
+                    cell.drawCell();
+                }
+
+
+            Pazl.onclick = function (e) {
+                var poY, poX, zamena, numbArr, zamenaArr;
+                poY = Math.floor(e.clientY / 100);
+                poX = Math.floor(e.clientX / 100);
+                numbArr = poY * 4 + poX;
+                console.log("R",arra[numbArr+1],"L",arra[numbArr-1],"me",arra[numbArr]);
+                console.log(numbArr-3*poY);
+                if (arra[numbArr + 1] === 16&&numbArr!==poY * 4 + 3) {
+                    let cell = new Cell(poX, poY, arra[numbArr]);
+                    zamenaArr = arra[numbArr + 1];
+                    arra[numbArr + 1] = arra[numbArr];
+                    arra[numbArr] = zamenaArr;
+                    click++;
+                    console.log(numbArr-3*poY);
+                }
+                if (arra[numbArr - 1] === 16&&numbArr!==poY*4) {
+                    let cell = new Cell(poX, poY, arra[numbArr]);
+                    zamenaArr = arra[numbArr - 1];
+                    arra[numbArr - 1] = arra[numbArr];
+                    arra[numbArr] = zamenaArr;
+                    click++;
+                }
+                if (arra[numbArr + 4] === 16) {
+                    let cell = new Cell(poX, poY, arra[numbArr]);
+                    zamenaArr = arra[numbArr + 4];
+                    arra[numbArr + 4] = arra[numbArr];
+                    arra[numbArr] = zamenaArr;
+                    click++;
+                }
+                if (arra[numbArr - 4] === 16) {
+                    let cell = new Cell(poX, poY, arra[numbArr]);
+                    zamenaArr = arra[numbArr - 4];
+                    arra[numbArr - 4] = arra[numbArr];
+                    arra[numbArr] = zamenaArr;
+                    click++;
+                }
+                point = click;
+
+            };
+
+            var endGame=document.getElementById("endGame");
+            endGame.onclick=function (e) {
+                var trueReply=0;
+                for(i=0;i<=15;i++)
+                if(arra[i]===i+1) {
+                    trueReply++;
+                    console.log(trueReply, arra[i], i + 1);
+                }
+                if(trueReply===16){
+                clearInterval(timer);
+                context.fillStyle = "#125";
+                context.fillRect(0, 0, 400, 400);
+                context.font="30px Ariel";
+                context.fillStyle = "#FFFFFF";
+                context.fillText("Ура,ты собрал все",40,140);
+                context.fillText("Количество кликов:",40,180);
+                context.fillText(point,300,180);
+                }
             }
         }, 1000 / fps);
 
-        Pazl.onclick = function (e) {
-            var poY, poX, zamena, numbArr;
-            poY = Math.floor(e.clientY / 100);
-            poX = Math.floor(e.clientX / 100);
-            numbArr = poY * 4 + poX;
-            console.log("Квадрат ", poY, poX, arr[numbArr]);
-            //Лево
-            if (arr[numbArr + 1] === 16) {
-                let cell = new Cell(arr[numbArr], numbArr );
-                zamena = arr[numbArr + 1];
-                arr[numbArr + 1] = arr[numbArr];
-                arr[numbArr] = zamena;
-            }
-            //Право
-            if (arr[numbArr - 1] === 16) {
-                let cell = new Cell(arr[numbArr], numbArr );
-                zamena = arr[numbArr - 1];
-                arr[numbArr - 1] = arr[numbArr];
-                arr[numbArr] = zamena;
-            }
-            //Низ
-            if (arr[numbArr + 4] === 16) {
-                let cell = new Cell(arr[numbArr], numbArr );
-                zamena = arr[numbArr + 4];
-                arr[numbArr + 4] = arr[numbArr];
-                arr[numbArr] = zamena;
-            }
-            //Верх
-            if (arr[numbArr - 4] === 16) {
-                let cell = new Cell(arr[numbArr], numbArr);
-                zamena = arr[numbArr - 4];
-                arr[numbArr - 4] = arr[numbArr];
-                arr[numbArr] = zamena;
-            }
-        }
+
+
+
     }
+
 };
+
+
+
