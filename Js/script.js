@@ -56,7 +56,7 @@ class Cell {
     }
 }
 var canvas=document.getElementById("Pazl");
-canvas.width=500;
+canvas.width=400;
 canvas.height=400;
 var context=canvas.getContext("2d");
 context.fillStyle="#125";
@@ -92,7 +92,7 @@ Pazl.onclick=function (e) {
                 numbArr = poY * 4 + poX;
                 console.log("R",arra[numbArr+1],"L",arra[numbArr-1],"me",arra[numbArr]);
                 console.log(numbArr-3*poY);
-                if (arra[numbArr + 1] === 16&&numbArr!==poY * 4 + 3) {
+                if (arra[numbArr + 1] === 16&&numbArr!==poY * 4 + 3&&arra[numbArr]!==undefined) {
                     let cell = new Cell(poX, poY, arra[numbArr]);
                     zamenaArr = arra[numbArr + 1];
                     arra[numbArr + 1] = arra[numbArr];
@@ -100,7 +100,7 @@ Pazl.onclick=function (e) {
                     click++;
                     console.log(numbArr-3*poY);
                 }
-                if (arra[numbArr - 1] === 16&&numbArr!==poY*4) {
+                if (arra[numbArr - 1] === 16&&numbArr!==poY*4&&arra[numbArr]!==undefined) {
                     let cell = new Cell(poX, poY, arra[numbArr]);
                     zamenaArr = arra[numbArr - 1];
                     arra[numbArr - 1] = arra[numbArr];
