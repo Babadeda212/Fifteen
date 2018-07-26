@@ -1,10 +1,5 @@
 var canvas=document.getElementById("Pazl");
-canvas.width=500;
-canvas.height=400;
 var context=canvas.getContext("2d");
-context.fillStyle="#125";
-context.fillRect(0,0,400,canvas.height);
-context.font="30px Ariel";
 class Cell{
     constructor(){
 
@@ -32,13 +27,47 @@ class Cell{
 
 }
 class GameField{
-
+    constructor() {
+        _that=this;
+        this.model = new GameModel();
+        this.model.field();
+        this.cell = new Cell();
+        var i = 0;
+        while (i <= 15) {
+            this.cell.drawCell(i);
+            i++;
+        }
+        console.log("before", this);
+        Pazl.onclick=function () {
+            _that.handle();
+        }
+    }
+    handle (e) {
+        console.log("after",this);
+        var x,y;
+        x=Math.floor(e.clientX/100);
+        y=Math.floor(e.clientY/100);
+        this.swapRight(x,y);
+    }
+    swapRight(x,y){
+        /* this.numberArr=(y*4+x);
+         if(this.model.arr[this.numberArr+1]===16)*/
+        console.log(x,y);
+    }
 }
 class GameModel{
     constructor(){
+        this.field();
         this.shuffle();
         console.log(this);
      }
+    field(){
+            canvas.width=500;
+            canvas.height=400;
+            context.fillStyle="#125";
+            context.fillRect(0,0,400,canvas.height);
+            context.font="30px Ariel";
+            }
     fillingArr(){
      this.arr=[];
      var i=0;
@@ -50,28 +79,16 @@ class GameModel{
     }
     shuffle() {
         var currentIndex = 15, temporaryValue, randomIndex ;
-        //currentIndex-текущий индекс,array.length-длинна массива,temporaryValue-временная переменная, randomIndex-рандомный индекс.
             this.fillingArr();
         while (0 !== currentIndex) {
-
-
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex -= 1;
-
-
             temporaryValue = this.arr[currentIndex];
             this.arr[currentIndex] = this.arr[randomIndex];
             this.arr[randomIndex] = temporaryValue;
         }
-
         return this.arr;
     }
 
 }
-var i=0;
-let cell = new Cell();
-while(i<=15) {
-    cell.drawCell(i);
-    i++;
-
-}
+let game=new GameField();
