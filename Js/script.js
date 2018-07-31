@@ -47,7 +47,7 @@ class GameField{
          for(var i=0;i<14;i++)
              if(_that.cell.model.arr[i]===i+1)
                  end++;
-         if(end===1) {
+         if(end===15) {
              _that.model.field();
              context.fillStyle = "White";
              context.fillText("Ура,ты собрал все",30,100);
