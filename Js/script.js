@@ -5,9 +5,8 @@ var context=canvas.getContext("2d");
 var click=0;
 class Cell{
     constructor(){
-
-        this.model = new GameModel();
-        this.model.shuffle();
+       this.model=new GameModel();
+       this.model.shuffle();
     }
     getX() {
         return(this.position % 4);
@@ -32,14 +31,18 @@ class Cell{
 }
 class GameField{
     constructor() {
-        var _that=this;
-        this.model = new GameModel();
+        var _that=this ; this.cellArr=[];
+        this.model= new GameModel();
+        this.field();
+        _that.cell = new Cell();
+        this.model.shuffle();
+        console.log(this.cell);
+        console.log(this.cell.model);
         go.onclick= function() {
-            _that.model.field();
-            _that.cell = new Cell();
-            _that.cell.model.shuffle();
+            _that.field();
             for (var i = 0; i <= 15; i++) {
                 _that.cell.drawCell(i);
+                _that.cellArr.push(_that.cell);
             }
         };
         end.onclick= function() {
@@ -55,10 +58,17 @@ class GameField{
              context.fillText(click,300,130);
          }
          };
-        console.log(this);
         Pazl.onclick=function (e) {
             _that.handle(e);
         };
+
+    }
+    field() {
+        canvas.width = 400;
+        canvas.height = 400;
+        context.fillStyle = "#125";
+        context.fillRect(0, 0, 400, canvas.height);
+        context.font = "30px Ariel";
     }
     handle (e) {
         this.x=Math.floor(e.clientX/100);
@@ -122,14 +132,7 @@ class GameField{
 }
 class GameModel {
     constructor() {
-        this.field();
-    }
-    field() {
-        canvas.width = 400;
-        canvas.height = 400;
-        context.fillStyle = "#125";
-        context.fillRect(0, 0, 400, canvas.height);
-        context.font = "30px Ariel";
+        this.fillingArr();
     }
     fillingArr() {
         this.arr = [];
@@ -151,8 +154,9 @@ class GameModel {
             this.arr[currentIndex] = this.arr[randomIndex];
             this.arr[randomIndex] = temporaryValue;
         }
-        return this.arr;
+       // return this.arr;
     }
 
 }
     let game = new GameField();
+console.log(game);
