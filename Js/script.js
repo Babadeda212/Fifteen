@@ -5,25 +5,24 @@ var context=canvas.getContext("2d");
 var click=0;
 class Cell{
     constructor(){
-       this.model=new GameModel();
-       this.model.shuffle();
+
     }
-    getX() {
-        return(this.position % 4);
+    getX(num) {
+        return(num % 4);
     }
-    getY(){
-        return(Math.floor(this.position/4));
+    getY(num){
+        return(Math.floor(num/4));
     }
 
-    drawCell(position){
+    drawCell(position,num){
         this.position=position;
         context.fillStyle = "#FFD700";
-        context.fillRect(this.getX() * 100 + 5, this.getY() * 100 + 5, 90, 90);
+        context.fillRect(this.getX(num) * 100 + 5, this.getY(num) * 100 + 5, 90, 90);
         context.fillStyle = "Black";
-        context.fillText(this.model.arr[this.position], this.getX() * 100 + 35, this.getY() * 100 + 40);
-        if(this.model.arr[this.position]===16){
+        context.fillText(this.position, this.getX(num) * 100 + 35, this.getY(num) * 100 + 40);
+        if(this.position===16){
             context.fillStyle="#125";
-            context.fillRect(this.getX()*100+5,this.getY()*100+5,90,90);
+            context.fillRect(this.getX(num)*100+5,this.getY(num)*100+5,90,90);
         }
 
 }
@@ -31,31 +30,38 @@ class Cell{
 }
 class GameField{
     constructor() {
-        var _that=this ; this.cellArr=[];
+        var cell;
+        var _that=this,i ; this.cellArr=[];
         this.model= new GameModel();
-        this.field();
-        _that.cell = new Cell();
         this.model.shuffle();
-        console.log(this.cell);
-        console.log(this.cell.model);
+        this.field();
+
         go.onclick= function() {
             _that.field();
-            for (var i = 0; i <= 15; i++) {
-                _that.cell.drawCell(i);
+            for (i = 0; i <= 15; i++) {
+                _that.cell=new Cell();
                 _that.cellArr.push(_that.cell);
+                cell=0;
+                _that.cell.drawCell(_that.model.arr[i],i);
             }
+            console.log(_that.model.arr);
+            console.log(_that.cellArr);
         };
         end.onclick= function() {
             var end=0;
-         for(var i=0;i<14;i++)
-             if(_that.cell.model.arr[i]===i+1)
+         for(var i=0;i<15;i++)
+             if(_that.model.arr[i]===i+1)
                  end++;
-         if(end===15) {
-             _that.model.field();
+         if(end===16) {
+             _that.field();
              context.fillStyle = "White";
              context.fillText("Ура,ты собрал все",30,100);
              context.fillText("Количиство кликов=",30,130);
              context.fillText(click,300,130);
+         }
+         else{
+             alert("Еще не все, найди ошибку!");
+             console.log(end);
          }
          };
         Pazl.onclick=function (e) {
@@ -81,51 +87,55 @@ class GameField{
     }
     swapRight(numberArr){
         var zamena;
-             if(this.cell.model.arr[numberArr+1]===16&& numberArr !==this.y * 4 + 3){
+             if(this.model.arr[numberArr+1]===16&& numberArr !==this.y * 4 + 3){
+                 console.log(this.model.arr);
                 click++;
-                zamena=this.cell.model.arr[numberArr+1];
-                this.cell.model.arr[numberArr+1]=this.cell.model.arr[numberArr];
-                this.cell.model.arr[numberArr]=zamena;
+                zamena=this.model.arr[numberArr+1];
+                this.model.arr[numberArr+1]=this.model.arr[numberArr];
+                this.model.arr[numberArr]=zamena;
                  for(var i=0;i<=15;i++)
-                     this.cell.drawCell(i);
+                     this.cell.drawCell(this.model.arr[i],i);
 
          }
 
     }
     swapLeft(numberArr){
         var zamena;
-        if(this.cell.model.arr[numberArr-1]===16&&numberArr !==this.y * 4 ){
+        if(this.model.arr[numberArr-1]===16&&numberArr !==this.y * 4 ){
+            console.log(this.model.arr);
             click++;
-            zamena=this.cell.model.arr[numberArr-1];
-            this.cell.model.arr[numberArr-1]=this.cell.model.arr[numberArr];
-            this.cell.model.arr[numberArr]=zamena;
+            zamena=this.model.arr[numberArr-1];
+            this.model.arr[numberArr-1]=this.model.arr[numberArr];
+            this.model.arr[numberArr]=zamena;
             for(var i=0;i<=15;i++)
-                this.cell.drawCell(i);
+                this.cell.drawCell(this.model.arr[i],i);
 
         }
 
     }
     swapUp(numberArr){
         var zamena;
-        if(this.cell.model.arr[numberArr+4]===16){
+        if(this.model.arr[numberArr+4]===16){
+            console.log(this.model.arr);
             click++;
-            zamena=this.cell.model.arr[numberArr+4];
-            this.cell.model.arr[numberArr+4]=this.cell.model.arr[numberArr];
-            this.cell.model.arr[numberArr]=zamena;
+            zamena=this.model.arr[numberArr+4];
+            this.model.arr[numberArr+4]=this.model.arr[numberArr];
+            this.model.arr[numberArr]=zamena;
             for(var i=0;i<=15;i++)
-                this.cell.drawCell(i);
+                this.cell.drawCell(this.model.arr[i],i);
 
         }
     }
     swapDown(numberArr){
         var zamena;
-        if(this.cell.model.arr[numberArr-4]===16){
+        if(this.model.arr[numberArr-4]===16){
+            console.log(this.model.arr);
             click++;
-            zamena=this.cell.model.arr[numberArr-4];
-            this.cell.model.arr[numberArr-4]=this.cell.model.arr[numberArr];
-            this.cell.model.arr[numberArr]=zamena;
+            zamena=this.model.arr[numberArr-4];
+            this.model.arr[numberArr-4]=this.model.arr[numberArr];
+            this.model.arr[numberArr]=zamena;
             for(var i=0;i<=15;i++)
-                this.cell.drawCell(i);
+                this.cell.drawCell(this.model.arr[i],i);
         }
 
     }
@@ -159,4 +169,3 @@ class GameModel {
 
 }
     let game = new GameField();
-console.log(game);
