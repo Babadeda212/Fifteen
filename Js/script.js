@@ -1,8 +1,8 @@
 var canvas=document.getElementById("Pazl");
-var go=document.getElementById("Go");
-var end=document.getElementById("End");
 var context=canvas.getContext("2d");
-var click=0;
+var go=document.getElementById("go");
+var end=document.getElementById("end");
+var click=0,sec=0,min=0,tenSec=0,timerId;
 class Cell{
     constructor(){
 
@@ -30,52 +30,58 @@ class Cell{
 }
 class GameField{
     constructor() {
+
         var cell;
-        var _that=this,i ; this.cellArr=[];
+        var _that=this,i ;
+        this.cellArr=[];
         this.model= new GameModel();
         this.model.shuffle();
         this.field();
-
-        go.onclick= function() {
-            _that.field();
             for (i = 0; i <= 15; i++) {
                 _that.cell=new Cell();
                 _that.cellArr.push(_that.cell);
                 cell=0;
                 _that.cell.drawCell(_that.model.arr[i],i);
             }
-            console.log(_that.model.arr);
-            console.log(_that.cellArr);
-        };
-        end.onclick= function() {
-            var end=0;
-         for(var i=0;i<15;i++)
-             if(_that.model.arr[i]===i+1)
-                 end++;
-         if(end===16) {
-             _that.field();
-             context.fillStyle = "White";
-             context.fillText("Ура,ты собрал все",30,100);
-             context.fillText("Количиство кликов=",30,130);
-             context.fillText(click,300,130);
-         }
-         else{
-             alert("Еще не все, найди ошибку!");
-             console.log(end);
-         }
-         };
         Pazl.onclick=function (e) {
             _that.handle(e);
         };
 
     }
     field() {
-        canvas.width = 400;
+        canvas.width = 600;
         canvas.height = 400;
         context.fillStyle = "#125";
         context.fillRect(0, 0, 400, canvas.height);
         context.font = "30px Ariel";
     }
+    timer(){
+        if(sec===9){
+            sec=0;
+            tenSec++;
+            context.fillStyle="white";
+            context.fillText(tenSec,480,385);
+        }
+        context.fillStyle = "black";
+        context.fillRect(410,350,100,50);
+        context.fillStyle="white";
+        context.font = "30px Ariel";
+        context.fillText(sec,485,385);
+        context.fillText(tenSec,465,385);
+        context.fillText(":",445,385);
+        context.fillText(min,425,385);
+
+        if(tenSec===6){
+            tenSec=0;
+            sec=0;
+            min++;
+        }
+        if(min===10){
+
+        }
+        sec++;
+    }
+
     handle (e) {
         this.x=Math.floor(e.clientX/100);
         this.y=Math.floor(e.clientY/100);
@@ -168,4 +174,40 @@ class GameModel {
     }
 
 }
-    let game = new GameField();
+class GameMenu{
+    constructor(){
+        this.model=new GameModel();
+        var _that=this;
+        go.onclick=function () {
+            _that.game = new GameField();
+            timerId=setInterval(function () {
+                _that.game.timer();
+            },300);
+
+        };
+        end.onclick= function() {
+            var end=0;
+            for(var i=0;i<15;i++)
+                if(_that.model.arr[i]===i+1)
+                    end++;
+            if(end===15) {
+                clearInterval(timerId);
+                _that.game.field();
+                context.fillStyle = "White";
+                context.fillText("Ура,ты собрал все",30,100);
+                context.fillText("Количиство кликов =",30,130);
+                context.fillText(click,300,130);
+                context.fillText("Время =",30,160);
+                context.fillText(min,150,160);
+                context.fillText(":",165,160);
+                context.fillText(tenSec,175,160);
+                context.fillText(sec,190,160);
+            }
+            else{
+                alert("Еще не все, найди ошибку!");
+                console.log(end);
+            }
+        };
+    }
+}
+new GameMenu();

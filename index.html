@@ -3,30 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Пятнашки</title>
-    <style>
-        .Go {
-            position: relative;
-            left: 405px;
-            bottom:400px;
-            width: 100px;
-        }
-        .End{
-            position: relative;
-            left: 405px;
-            bottom:400px;
-            width: 100px;
-        }
-    </style>
-
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<canvas id="Pazl"></canvas>
-<div class="Go">
-    <input id="Go" type="submit" value="Начать игру" style="width:100Px;height:30Px" >
-</div>
-<div class="End">
-    <input id="End" type="submit" value="Конец" style="width:100Px;height:30Px">
-</div>
+<canvas id="Pazl" width="0" height="0"></canvas>
+<canvas id="Timer" width="0" height="0"></canvas>
+    <div class="wrapper" >
+     <div class="buttons">
+        <div class="button Go" id="go">Начать игру</div>
+        </div>
+        <div class="buttons">
+         <div class="button End" id="end">Закончить</div>
+     </div>
+    </div>
 <script src="Js/script.js"></script>
 </body>
 </html>

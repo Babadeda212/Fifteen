@@ -1,0 +1,33 @@
+.wrapper
+{
+    width: 150px;
+
+}
+a
+{
+    text-decoration: none;
+}
+.buttons
+{
+    padding: 2px;
+
+}
+.button
+{
+    font-family: Tahoma;
+    font-size: 20px;
+    display: inline-block;
+    padding: 5px ;
+    border: 2px solid #000;
+    -webkit-transition: all .3s ease;
+    text-transform: uppercase;
+
+}
+.button:hover
+{
+    cursor: pointer;
+    background: #125;
+    color: #fff;
+    border: 2px solid #125;
+
+}
